@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "NB_01_FHIR_API_Ingestion"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2aeaead2-a452-b3ab-42e8-ea5a8d8cc230"
+  }
+}

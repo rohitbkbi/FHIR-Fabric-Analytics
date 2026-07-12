@@ -1,0 +1,26 @@
+relationship a05305d1-1afa-a406-c752-602c80065e9b
+	fromColumn: dim_date.date_key
+	toColumn: fact_encounter.start_date_key
+
+relationship b371f6ea-91e9-fb48-0317-f2107d3404bf
+	isActive: false
+	fromColumn: dim_date.date_key
+	toColumn: fact_encounter.end_date_key
+
+relationship 553c3616-9b4a-24c0-6a41-7526763905ac
+	fromColumn: fact_encounter.patient_sk
+	toColumn: gold_dim_patient.patient_sk
+
+relationship 41ba35fe-6659-e0c3-853c-1e58e866ef8d
+	fromColumn: dim_date.date_key
+	toColumn: fact_observation.observation_date_key
+
+relationship 957ea5b9-b390-960d-1b21-825f2d7a6b23
+	fromColumn: gold_dim_condition.patient_business_key
+	toColumn: gold_dim_patient.patient_business_key
+
+relationship c72194f9-797b-48d6-baed-3ca77811bc8e
+	isActive: false
+	fromColumn: fact_observation.patient_sk
+	toColumn: gold_dim_patient.patient_sk
+

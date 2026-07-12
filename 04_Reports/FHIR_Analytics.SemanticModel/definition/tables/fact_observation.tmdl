@@ -1,0 +1,124 @@
+table fact_observation
+	lineageTag: b6b4b564-11c6-4d1a-871d-a3c28ab80744
+	sourceLineageTag: [dbo].[fact_observation]
+
+	column observation_id
+		dataType: string
+		lineageTag: 94921c06-5ffe-428d-b2f0-401afb74520d
+		sourceLineageTag: observation_id
+		summarizeBy: none
+		sourceColumn: observation_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 8134beb3-ef57-4ad0-a51c-af4e259cb87c
+		sourceLineageTag: patient_sk
+		summarizeBy: none
+		sourceColumn: patient_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_id
+		dataType: string
+		lineageTag: d75d857b-e2ee-4f48-8803-373af0987d2e
+		sourceLineageTag: encounter_id
+		summarizeBy: none
+		sourceColumn: encounter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column observation_date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: c6471ff3-5a90-4544-aced-a73c34a4ae8c
+		sourceLineageTag: observation_date_key
+		summarizeBy: none
+		sourceColumn: observation_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 6dbecca1-31ac-4e00-9be6-d95854ceafc8
+		sourceLineageTag: status
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column observation_code_text
+		dataType: string
+		lineageTag: a9e34514-53ca-4d6d-b77d-32e28ad202ff
+		sourceLineageTag: observation_code_text
+		summarizeBy: none
+		sourceColumn: observation_code_text
+
+		annotation SummarizationSetBy = Automatic
+
+	column observation_code
+		dataType: string
+		lineageTag: 44d9f745-b5c4-467e-981c-b754919f1f1f
+		sourceLineageTag: observation_code
+		summarizeBy: none
+		sourceColumn: observation_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column coding_system
+		dataType: string
+		lineageTag: 6a838ae3-6d3c-4ed4-9c11-8bc5eed82d04
+		sourceLineageTag: coding_system
+		summarizeBy: none
+		sourceColumn: coding_system
+
+		annotation SummarizationSetBy = Automatic
+
+	column value_numeric
+		dataType: double
+		lineageTag: 3690ffd1-e9a9-4233-9bcc-36007a9e19f5
+		sourceLineageTag: value_numeric
+		summarizeBy: none
+		sourceColumn: value_numeric
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column value_unit
+		dataType: string
+		lineageTag: 3e3e557b-41ef-4d62-a045-3c31bc9229e5
+		sourceLineageTag: value_unit
+		summarizeBy: none
+		sourceColumn: value_unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column value_string
+		dataType: string
+		lineageTag: e753866a-bac3-4c94-85aa-4d1b47894b61
+		sourceLineageTag: value_string
+		summarizeBy: none
+		sourceColumn: value_string
+
+		annotation SummarizationSetBy = Automatic
+
+	column effective_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 52dceff7-0a66-4aea-a6a0-53d84619170b
+		sourceLineageTag: effective_date
+		summarizeBy: none
+		sourceColumn: effective_date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_observation = entity
+		mode: directLake
+		source
+			entityName: fact_observation
+			schemaName: dbo
+			expressionSource: 'DirectLake - LH_FHIR_Analytics'
+

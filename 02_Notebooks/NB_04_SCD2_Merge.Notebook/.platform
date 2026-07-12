@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "NB_04_SCD2_Merge"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "65c943cc-f88d-aa82-44ea-b512594ee08a"
+  }
+}

@@ -1,0 +1,115 @@
+table gold_dim_condition
+	lineageTag: 457b1949-ea50-4d4e-9580-bdd0820b095d
+	sourceLineageTag: [dbo].[gold_dim_condition]
+
+	column condition_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 328b890d-0649-4e9a-bde9-a8da25107550
+		sourceLineageTag: condition_sk
+		summarizeBy: sum
+		sourceColumn: condition_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column condition_business_key
+		dataType: string
+		lineageTag: 6a6199f3-b98e-451f-9e45-d1598722c002
+		sourceLineageTag: condition_business_key
+		summarizeBy: none
+		sourceColumn: condition_business_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column clinical_status
+		dataType: string
+		lineageTag: 20345c91-f1c2-4772-a5db-c96de4bcd816
+		sourceLineageTag: clinical_status
+		summarizeBy: none
+		sourceColumn: clinical_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column verification_status
+		dataType: string
+		lineageTag: 2cd38d7d-e2df-4f3c-934c-dae60267386f
+		sourceLineageTag: verification_status
+		summarizeBy: none
+		sourceColumn: verification_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column condition_text
+		dataType: string
+		lineageTag: 6a228f87-ce76-4443-8302-32b25d2e447e
+		sourceLineageTag: condition_text
+		summarizeBy: none
+		sourceColumn: condition_text
+
+		annotation SummarizationSetBy = Automatic
+
+	column condition_code
+		dataType: string
+		lineageTag: 77bc198a-c3f5-4288-abae-7d6caf20ecce
+		sourceLineageTag: condition_code
+		summarizeBy: none
+		sourceColumn: condition_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_business_key
+		dataType: string
+		lineageTag: 1def2a50-9850-4fed-9894-65cda51c35f5
+		sourceLineageTag: patient_business_key
+		summarizeBy: none
+		sourceColumn: patient_business_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column onset_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 2c79f58f-c459-4cbc-9e48-b2386264b8cb
+		sourceLineageTag: onset_date
+		summarizeBy: none
+		sourceColumn: onset_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column recorded_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 3334e35c-e208-45d8-ad9a-bea3de482cb4
+		sourceLineageTag: recorded_date
+		summarizeBy: none
+		sourceColumn: recorded_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column scd_effective_start_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 6b36579b-eb89-4334-8fbd-5df6e58fc53a
+		sourceLineageTag: scd_effective_start_date
+		summarizeBy: none
+		sourceColumn: scd_effective_start_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column scd_effective_end_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: b329e5a9-87a4-409a-b7be-de7a8537bdab
+		sourceLineageTag: scd_effective_end_date
+		summarizeBy: none
+		sourceColumn: scd_effective_end_date
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_dim_condition = entity
+		mode: directLake
+		source
+			entityName: gold_dim_condition
+			schemaName: dbo
+			expressionSource: 'DirectLake - LH_FHIR_Analytics'
+

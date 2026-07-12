@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "SemanticModel",
+    "displayName": "FHIR_Analytics"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "e2a0071d-6b65-8dd4-45ac-86679c414e78"
+  }
+}

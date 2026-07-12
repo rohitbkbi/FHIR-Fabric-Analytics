@@ -1,0 +1,171 @@
+table gold_dim_patient
+	lineageTag: 81218d83-877a-4d83-9e3c-e572f0bf7204
+	sourceLineageTag: [dbo].[gold_dim_patient]
+
+	column patient_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 646dc953-4408-48d1-bcba-4620bee11670
+		sourceLineageTag: patient_sk
+		summarizeBy: none
+		sourceColumn: patient_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_business_key
+		dataType: string
+		lineageTag: 3a90b5d8-a8b5-4007-b355-737f26659352
+		sourceLineageTag: patient_business_key
+		summarizeBy: none
+		sourceColumn: patient_business_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column gender
+		dataType: string
+		lineageTag: 97b3772c-0fbb-4837-bf25-21590a25839b
+		sourceLineageTag: gender
+		summarizeBy: none
+		sourceColumn: gender
+
+		annotation SummarizationSetBy = Automatic
+
+	column birth_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: a8b2c7e8-13ba-45df-b0ae-dd039ff2741c
+		sourceLineageTag: birth_date
+		summarizeBy: none
+		sourceColumn: birth_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column family_name
+		dataType: string
+		lineageTag: bb03523e-0b75-4c54-a299-104ca396850f
+		sourceLineageTag: family_name
+		summarizeBy: none
+		sourceColumn: family_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column given_name
+		dataType: string
+		lineageTag: 18bbd901-dd58-4718-8f90-2e5ee547e815
+		sourceLineageTag: given_name
+		summarizeBy: none
+		sourceColumn: given_name
+
+		annotation SummarizationSetBy = Automatic
+
+	column city
+		dataType: string
+		lineageTag: 96e01b4e-d382-4574-ac1f-1b56b58915c0
+		sourceLineageTag: city
+		summarizeBy: none
+		sourceColumn: city
+
+		annotation SummarizationSetBy = Automatic
+
+	column state
+		dataType: string
+		lineageTag: f851d4c4-1a26-4efa-86ec-d3c75fdf6cbc
+		sourceLineageTag: state
+		summarizeBy: none
+		sourceColumn: state
+
+		annotation SummarizationSetBy = Automatic
+
+	column postal_code
+		dataType: string
+		lineageTag: 62d47980-f4f8-41f7-a866-73b99ccf3671
+		sourceLineageTag: postal_code
+		summarizeBy: none
+		sourceColumn: postal_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column country
+		dataType: string
+		lineageTag: e5972bd0-a494-47ff-b216-cfba972e22be
+		sourceLineageTag: country
+		summarizeBy: none
+		sourceColumn: country
+
+		annotation SummarizationSetBy = Automatic
+
+	column marital_status
+		dataType: string
+		lineageTag: ea75509d-5a6b-4c18-8a0a-3347bc1da22c
+		sourceLineageTag: marital_status
+		summarizeBy: none
+		sourceColumn: marital_status
+
+		annotation SummarizationSetBy = Automatic
+
+	column active_flag
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 500ec41c-d232-4d89-a844-0c009a82f6f6
+		sourceLineageTag: active_flag
+		summarizeBy: none
+		sourceColumn: active_flag
+
+		annotation SummarizationSetBy = Automatic
+
+	column scd_effective_start_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 95052f2e-73df-4f96-8ade-b67578ff86d6
+		sourceLineageTag: scd_effective_start_date
+		summarizeBy: none
+		sourceColumn: scd_effective_start_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column scd_effective_end_date
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: e989df1d-d7bd-4cbd-be07-986e8890dad7
+		sourceLineageTag: scd_effective_end_date
+		summarizeBy: none
+		sourceColumn: scd_effective_end_date
+
+		annotation SummarizationSetBy = Automatic
+
+	column age
+		dataType: int64
+		formatString: 0
+		lineageTag: 6997965e-e50e-4491-b8b2-d84352751a59
+		sourceLineageTag: age
+		summarizeBy: sum
+		sourceColumn: age
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group
+		dataType: string
+		lineageTag: aed56d0c-4430-4e0c-bb4f-1b7592ae04ce
+		sourceLineageTag: age_group
+		summarizeBy: none
+		sourceColumn: age_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column age_group_sort_order
+		dataType: int64
+		formatString: 0
+		lineageTag: e3b3522e-3a27-469e-be57-0e420b65dabd
+		sourceLineageTag: age_group_sort_order
+		summarizeBy: sum
+		sourceColumn: age_group_sort_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition gold_dim_patient = entity
+		mode: directLake
+		source
+			entityName: gold_dim_patient
+			schemaName: dbo
+			expressionSource: 'DirectLake - LH_FHIR_Analytics'
+

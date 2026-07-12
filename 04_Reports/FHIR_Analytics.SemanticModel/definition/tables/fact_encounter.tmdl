@@ -1,0 +1,136 @@
+table fact_encounter
+	lineageTag: b7856b46-feff-4c55-bbbd-4ee4250dd66d
+	sourceLineageTag: [dbo].[fact_encounter]
+
+	column encounter_id
+		dataType: string
+		lineageTag: f4c72dfa-6ee0-4dae-9d83-06e81d0c0ad8
+		sourceLineageTag: encounter_id
+		summarizeBy: none
+		sourceColumn: encounter_id
+
+		annotation SummarizationSetBy = Automatic
+
+	column patient_sk
+		dataType: int64
+		formatString: 0
+		lineageTag: 1372aa4e-ca9b-4177-aaba-666f7dc32eea
+		sourceLineageTag: patient_sk
+		summarizeBy: none
+		sourceColumn: patient_sk
+
+		annotation SummarizationSetBy = Automatic
+
+	column start_date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: a6f15312-d310-43ba-9ebc-69dc52821ece
+		sourceLineageTag: start_date_key
+		summarizeBy: none
+		sourceColumn: start_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column end_date_key
+		dataType: int64
+		formatString: 0
+		lineageTag: 464eaed2-1250-4c8a-862e-13e382968d14
+		sourceLineageTag: end_date_key
+		summarizeBy: sum
+		sourceColumn: end_date_key
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 8c5ec0be-baf7-42f6-b5ed-69cfeed55dc2
+		sourceLineageTag: status
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_class
+		dataType: string
+		lineageTag: bb48a4f4-70a9-4b2b-be47-f102ffbf9cfa
+		sourceLineageTag: encounter_class
+		summarizeBy: none
+		sourceColumn: encounter_class
+
+		annotation SummarizationSetBy = Automatic
+
+	column encounter_type
+		dataType: string
+		lineageTag: dbcf9d2b-cb26-4a2a-bdb1-0f28a7a635e9
+		sourceLineageTag: encounter_type
+		summarizeBy: none
+		sourceColumn: encounter_type
+
+		annotation SummarizationSetBy = Automatic
+
+	column service_provider
+		dataType: string
+		lineageTag: cfe0f24c-16ee-457e-a5b9-d8da54ff4cea
+		sourceLineageTag: service_provider
+		summarizeBy: none
+		sourceColumn: service_provider
+
+		annotation SummarizationSetBy = Automatic
+
+	column period_start
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 7d658f5e-39a5-4c3d-974e-b648c50a8e70
+		sourceLineageTag: period_start
+		summarizeBy: none
+		sourceColumn: period_start
+
+		annotation SummarizationSetBy = Automatic
+
+	column period_end
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: cc90db30-20af-4801-a683-e1d5059ee963
+		sourceLineageTag: period_end
+		summarizeBy: none
+		sourceColumn: period_end
+
+		annotation SummarizationSetBy = Automatic
+
+	column length_of_stay_days
+		dataType: double
+		lineageTag: 9a25ab68-3793-457e-88ba-43db89868dfb
+		sourceLineageTag: length_of_stay_days
+		summarizeBy: sum
+		sourceColumn: length_of_stay_days
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column los_bucket
+		dataType: string
+		lineageTag: 43d1083b-bdd5-45e2-a549-1301b11a1e20
+		sourceLineageTag: los_bucket
+		summarizeBy: none
+		sourceColumn: los_bucket
+
+		annotation SummarizationSetBy = Automatic
+
+	column los_bucket_sort_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 3261015d-ff70-40f7-9818-3c8f38acec72
+		sourceLineageTag: los_bucket_sort_order
+		summarizeBy: sum
+		sourceColumn: los_bucket_sort_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_encounter = entity
+		mode: directLake
+		source
+			entityName: fact_encounter
+			schemaName: dbo
+			expressionSource: 'DirectLake - LH_FHIR_Analytics'
+

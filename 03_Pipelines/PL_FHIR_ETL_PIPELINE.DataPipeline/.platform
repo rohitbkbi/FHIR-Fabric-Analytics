@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "DataPipeline",
+    "displayName": "PL_FHIR_ETL_PIPELINE"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "e4afb393-5dcc-87f7-4e0f-c081edb68cfd"
+  }
+}

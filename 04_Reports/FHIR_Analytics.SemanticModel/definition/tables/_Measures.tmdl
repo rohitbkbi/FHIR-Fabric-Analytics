@@ -1,0 +1,331 @@
+table _Measures
+	lineageTag: e473192f-1d11-4af4-aefa-3ee52b2d306c
+
+	measure 'Total Patients' =
+			
+			DISTINCTCOUNT( fact_encounter[patient_sk] )
+		formatString: 0
+		displayFolder: Patients
+		lineageTag: 678ae35d-9861-4202-8441-fbd866655299
+
+	measure 'Total Encounters' =
+			
+			COUNTROWS( fact_encounter )
+		formatString: 0
+		displayFolder: Encounters
+		lineageTag: 477bfc0a-fff3-457a-9e9b-7a96c4667d45
+
+	measure 'Total Observations' =
+			
+			COUNTROWS( fact_observation )
+		formatString: 0
+		displayFolder: Observations
+		lineageTag: e7267e2e-2090-427c-aaf1-0decdc11d9fd
+
+	measure 'Active Conditions' =
+			
+			CALCULATE(
+			    COUNTROWS( gold_dim_condition ),
+			    gold_dim_condition[clinical_status] = "active"
+			)
+		formatString: 0
+		displayFolder: Conditions
+		lineageTag: c3f6d6c4-8ebb-430e-8d59-8d8856f45afe
+
+	measure 'Total Conditions' =
+			
+			COUNTROWS( gold_dim_condition )
+		formatString: 0
+		displayFolder: Conditions
+		lineageTag: 76de3475-580a-4703-a236-4891ac200312
+
+	measure 'Encounters Finished' =
+			
+			CALCULATE(
+			    COUNTROWS( fact_encounter ),
+			    fact_encounter[status] = "finished"
+			)
+		formatString: 0
+		displayFolder: Encounters
+		lineageTag: ecf6b31e-c592-492e-829a-c40bae41b263
+
+	measure 'Encounters Cancelled' =
+			
+			CALCULATE(
+			    COUNTROWS( fact_encounter ),
+			    fact_encounter[status] = "cancelled"
+			)
+		formatString: 0
+		displayFolder: Encounters
+		lineageTag: a03cadcf-d65e-405b-b42b-48bb19df29c9
+
+	measure 'Encounters In Progress' =
+			
+			CALCULATE(
+			    COUNTROWS( fact_encounter ),
+			    fact_encounter[status] = "in-progress"
+			)
+		formatString: 0
+		displayFolder: Encounters
+		lineageTag: 3dfe0d98-583c-4cdf-a881-24907b2c7635
+
+	measure 'Encounters Arrived' =
+			
+			CALCULATE(
+			    COUNTROWS( fact_encounter ),
+			    fact_encounter[status] = "arrived"
+			)
+		formatString: 0
+		displayFolder: Encounters
+		lineageTag: 79c59171-7ce4-4435-92d9-396b2131b96a
+
+	measure 'Encounter Status %' =
+			
+			DIVIDE(
+			    COUNTROWS( fact_encounter ),
+			    CALCULATE(
+			        COUNTROWS( fact_encounter ),
+			        ALL( fact_encounter[status] )
+			    ),
+			    0
+			)
+		displayFolder: Encounters
+		lineageTag: d762de93-6a7f-44f0-b389-ba6e0f1f619f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg LOS Days' =
+			
+			CALCULATE(
+			    AVERAGE( fact_encounter[length_of_stay_days] ),
+			    fact_encounter[encounter_class] = "IMP",
+			    NOT ISBLANK( fact_encounter[length_of_stay_days] )
+			)
+		displayFolder: LOS
+		lineageTag: 5e723237-f6b1-4f61-8878-886bf886a58c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg LOS All Classes' =
+			
+			CALCULATE(
+			    AVERAGE( fact_encounter[length_of_stay_days] ),
+			    NOT ISBLANK( fact_encounter[length_of_stay_days] )
+			)
+		displayFolder: LOS
+		lineageTag: 182130ff-745b-452b-9a83-ef6b29cead00
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Max LOS Days' =
+			
+			CALCULATE(
+			    MAX( fact_encounter[length_of_stay_days] ),
+			    fact_encounter[encounter_class] = "IMP"
+			)
+		displayFolder: LOS
+		lineageTag: c1e08ae9-0ae5-4bb4-b168-c094d9f3bd2b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Total LOS Days' =
+			
+			CALCULATE(
+			    SUM( fact_encounter[length_of_stay_days] ),
+			    NOT ISBLANK( fact_encounter[length_of_stay_days] )
+			)
+		displayFolder: LOS
+		lineageTag: a6211170-9782-441b-8823-585b1386314b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg Observation Value' =
+			
+			CALCULATE(
+			    AVERAGE( fact_observation[value_numeric] ),
+			    NOT ISBLANK( fact_observation[value_numeric] )
+			)
+		displayFolder: Observations
+		lineageTag: 84060b1e-c552-4a0f-adbe-1746a06e4d2c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Numeric Observations' =
+			
+			CALCULATE(
+			    COUNTROWS( fact_observation ),
+			    NOT ISBLANK( fact_observation[value_numeric] )
+			)
+		formatString: 0
+		displayFolder: Observations
+		lineageTag: 9aec960b-fb7e-48d8-87ee-bf49409d699a
+
+	measure 'Observations per Patient' =
+			
+			DIVIDE(
+			    [Total Observations],
+			    [Total Patients],
+			    0
+			)
+		displayFolder: Observations
+		lineageTag: 493e00cc-07ab-4bd6-8596-cff12f3f8514
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Encounters per Patient' =
+			
+			DIVIDE(
+			    [Total Encounters],
+			    [Total Patients],
+			    0
+			)
+		displayFolder: Observations
+		lineageTag: b60c947d-b589-49f4-9be1-52fb51041f0c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Encounters MTD' =
+			
+			CALCULATE(
+			    [Total Encounters],
+			    DATESMTD( dim_date[full_date] )
+			)
+		formatString: 0
+		displayFolder: Time Intelligence
+		lineageTag: fc289660-bbce-4b6b-a15f-e8d807d2f804
+
+	measure 'Encounters YTD' =
+			
+			CALCULATE(
+			    [Total Encounters],
+			    DATESYTD( dim_date[full_date] )
+			)
+		formatString: 0
+		displayFolder: Time Intelligence
+		lineageTag: 0da1ee9e-bc9b-4cbd-9c29-ce8a54283fbb
+
+	measure 'Encounters Prior Month' = ```
+			
+			CALCULATE(
+			    [Total Encounters],
+			    PREVIOUSMONTH( dim_date[full_date] )
+			)
+			
+			```
+		formatString: 0
+		displayFolder: Time Intelligence
+		lineageTag: 4859ba96-675f-4814-97dd-697577f22c26
+
+	measure 'Encounters MoM %' =
+			
+			VAR Currentt  = [Total Encounters]
+			VAR Prior    = [Encounters Prior Month]
+			RETURN
+			    DIVIDE( Currentt - Prior, Prior, BLANK() )
+		displayFolder: Time Intelligence
+		lineageTag: f05ca2b6-42cc-4690-97b2-5103895b54b0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Patients Prior Month' =
+			
+			CALCULATE(
+			    [Total Patients],
+			    PREVIOUSMONTH( dim_date[full_date] )
+			)
+		formatString: 0
+		displayFolder: Time Intelligence
+		lineageTag: 53b507d7-5e15-44eb-ae59-17f2928de992
+
+	measure 'Patients MoM %' =
+			
+			VAR Currentt = [Total Patients]
+			VAR Prior   = [Patients Prior Month]
+			RETURN
+			    DIVIDE( Currentt - Prior, Prior, BLANK() )
+		displayFolder: Time Intelligence
+		lineageTag: 6c181618-8081-4973-b794-02bda08ce8d5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Avg LOS by Discharge Date' = ```
+			
+			CALCULATE(
+			    AVERAGE( fact_encounter[length_of_stay_days] ),
+			    USERELATIONSHIP(
+			        dim_date[date_key],
+			        fact_encounter[end_date_key]
+			    ),
+			    fact_encounter[encounter_class] = "IMP",
+			    NOT ISBLANK( fact_encounter[length_of_stay_days] )
+			)
+			
+			```
+		displayFolder: Time Intelligence
+		lineageTag: 9509a0c0-7835-448a-b26f-fc859466f8ad
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Patients with Condition' =
+			
+			DISTINCTCOUNT( gold_dim_condition[patient_business_key] )
+		formatString: 0
+		displayFolder: Conditions
+		lineageTag: 47e4bc58-0d0e-4b09-a03e-a8877c780320
+
+	measure 'Condition Resolution Rate' = ```
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS( gold_dim_condition ),
+			        gold_dim_condition[clinical_status] = "resolved"
+			    ),
+			    COUNTROWS( gold_dim_condition ),
+			    0
+			)
+			
+			```
+		displayFolder: Conditions
+		lineageTag: 7c5f1974-61c7-4890-8f99-e8a80356f0d6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Page Title' = ```
+			
+			"Healthcare Analytics"
+			    & " | "
+			    & SELECTEDVALUE( dim_date[year], "All Years" )
+			    & " | "
+			    & SELECTEDVALUE( fact_encounter[encounter_class], "All Classes" )
+			
+			```
+		displayFolder: Dynamic Title
+		lineageTag: 9e53ac3e-4d75-4445-b0a7-3f3496e3ecf3
+
+	measure 'Selected Period' = ```
+			
+			VAR yr  = SELECTEDVALUE( dim_date[year],    "All Years" )
+			VAR qtr = SELECTEDVALUE( dim_date[quarter], "All Quarters" )
+			RETURN yr & " — " & qtr
+			
+			```
+		displayFolder: Dynamic Title
+		lineageTag: e5657331-f63e-4cd6-bcad-25986260d46a
+
+	column Column
+		formatString: 0
+		lineageTag: f350049b-c54d-4633-8a68-02dbd5116756
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Column]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = calculated
+		mode: import
+		source = Row("Column", BLANK())
+
+	annotation PBI_Id = f48dddd08237493f9b56b01c2da96d84
+
+	annotation 436ba87b-9c83-4389-a31b-ebd06a36be98 = {"Expression":""}
+

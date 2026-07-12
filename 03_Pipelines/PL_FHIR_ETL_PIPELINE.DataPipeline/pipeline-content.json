@@ -1,0 +1,266 @@
+{
+  "properties": {
+    "activities": [
+      {
+        "type": "Lookup",
+        "typeProperties": {
+          "source": {
+            "type": "LakehouseTableSource",
+            "sqlReaderQuery": "SELECT resource_type,\n       load_order\nFROM dbo.meta_resource_config\nWHERE active_flag = 'true'\nORDER BY load_order;",
+            "partitionOption": "None"
+          },
+          "datasetSettings": {
+            "type": "LakehouseTable",
+            "typeProperties": {
+              "schema": "dbo",
+              "table": "meta_resource_config"
+            },
+            "schema": [],
+            "connectionSettings": {
+              "name": "LH_FHIR_Analytics",
+              "properties": {
+                "type": "Lakehouse",
+                "typeProperties": {
+                  "artifactId": "be902ff0-c477-8735-4972-34f48fb7d13b",
+                  "workspaceId": "00000000-0000-0000-0000-000000000000",
+                  "rootFolder": "Tables"
+                },
+                "externalReferences": {
+                  "connection": "743085c2-48c0-4d80-becf-0a3f022985d7"
+                },
+                "annotations": []
+              }
+            },
+            "annotations": []
+          },
+          "firstRowOnly": false
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "LKP_Get_Resource_Config",
+        "dependsOn": []
+      },
+      {
+        "type": "ForEach",
+        "typeProperties": {
+          "isSequential": true,
+          "items": {
+            "value": "@activity('LKP_Get_Resource_Config').output.value",
+            "type": "Expression"
+          },
+          "activities": [
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "2aeaead2-a452-b3ab-42e8-ea5a8d8cc230",
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "parameters": {
+                  "resource_type": {
+                    "value": {
+                      "value": "@item().resource_type",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 2,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "NB_Raw_Ingestion",
+              "dependsOn": []
+            },
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "c58731ae-9ebb-bc07-42d7-93af2f7ef15e",
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "parameters": {
+                  "resource_type ": {
+                    "value": {
+                      "value": "@item().resource_type",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 3,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "NB_Bronze_Load",
+              "dependsOn": [
+                {
+                  "activity": "NB_Raw_Ingestion",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "TridentNotebook",
+              "typeProperties": {
+                "notebookId": "86fcdfd9-1fdb-8820-4e95-f17df945681c",
+                "workspaceId": "00000000-0000-0000-0000-000000000000",
+                "parameters": {
+                  "resource_type ": {
+                    "value": {
+                      "value": "@item().resource_type",
+                      "type": "Expression"
+                    },
+                    "type": "string"
+                  }
+                }
+              },
+              "policy": {
+                "timeout": "0.12:00:00",
+                "retry": 3,
+                "retryIntervalInSeconds": 30,
+                "secureInput": false,
+                "secureOutput": false
+              },
+              "name": "NB_Silver_Load",
+              "dependsOn": [
+                {
+                  "activity": "NB_Bronze_Load",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "IfCondition",
+              "typeProperties": {
+                "expression": {
+                  "value": "@or(equals(item().resource_type, 'Patient'), equals(item().resource_type, 'Condition'))",
+                  "type": "Expression"
+                },
+                "ifTrueActivities": [
+                  {
+                    "type": "TridentNotebook",
+                    "typeProperties": {
+                      "notebookId": "65c943cc-f88d-aa82-44ea-b512594ee08a",
+                      "workspaceId": "00000000-0000-0000-0000-000000000000",
+                      "parameters": {
+                        "resource_type ": {
+                          "value": {
+                            "value": "@item().resource_type",
+                            "type": "Expression"
+                          },
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "policy": {
+                      "timeout": "0.12:00:00",
+                      "retry": 3,
+                      "retryIntervalInSeconds": 30,
+                      "secureInput": false,
+                      "secureOutput": false
+                    },
+                    "name": "NB_SCD2_Merge",
+                    "dependsOn": []
+                  }
+                ],
+                "ifFalseActivities": []
+              },
+              "name": "IF_Is_SCD2_Resource",
+              "dependsOn": [
+                {
+                  "activity": "NB_Silver_Load",
+                  "dependencyConditions": [
+                    "Succeeded"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        "name": "FE_Process_Each_Resource",
+        "dependsOn": [
+          {
+            "activity": "LKP_Get_Resource_Config",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "af9350c4-1b7f-9962-468f-22c5fb1e11d9",
+          "workspaceId": "00000000-0000-0000-0000-000000000000"
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 3,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "NB_Gold_Load",
+        "dependsOn": [
+          {
+            "activity": "FE_Process_Each_Resource",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "TridentNotebook",
+        "typeProperties": {
+          "notebookId": "8d0aa06a-682d-8f26-415a-28c9d7cae698",
+          "workspaceId": "00000000-0000-0000-0000-000000000000",
+          "parameters": {
+            "pipeline_run_id": {
+              "value": "@pipeline().RunId",
+              "type": "string"
+            },
+            "pipeline_name": {
+              "value": "@pipeline().Pipeline",
+              "type": "string"
+            },
+            "overall_status": {
+              "value": "@activity('FE_Process_Each_Resource').Status",
+              "type": "string"
+            }
+          }
+        },
+        "policy": {
+          "timeout": "0.12:00:00",
+          "retry": 0,
+          "retryIntervalInSeconds": 30,
+          "secureInput": false,
+          "secureOutput": false
+        },
+        "name": "NB_Log_Pipeline_Status",
+        "dependsOn": [
+          {
+            "activity": "NB_Gold_Load",
+            "dependencyConditions": [
+              "Completed"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
